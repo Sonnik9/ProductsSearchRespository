@@ -11,18 +11,14 @@ let  markPrepare;
 let inputEl;
 let selectEl;
 let manegerFix;
-let indSortAfterHome = 0;
-
 let sortByNewest;
-
 
 function generatManeger() {
     let manegerFi = document.createElement('div');
     manegerFi.classList.add('maneger-fix');
     maneger.append(manegerFi);
     manegerFix = document.querySelector('.maneger-fix');
-    manegerFix.innerHTML = `
-    
+    manegerFix.innerHTML = `    
        <h2>Search</h2>
        <input id="my-input" type="text" placeholder="search">
        <h3>Sort by</h3>
@@ -30,9 +26,8 @@ function generatManeger() {
           <option value="newest">Newest</option>
           <option value="alphabet">Alphabet</option>
           <option value="random">Random</option>
-       </select> 
-    
-    `
+       </select>     
+    `;
     inputEl = document.querySelector('#my-input');
     selectEl = document.querySelector('#my-select');
     inputEl.addEventListener('input', searchingItems);
@@ -47,38 +42,37 @@ function recreateManeger() {
     manegerFix.remove();
     generatManeger();
     indSort = 0;
-   }
-           
+}
 
-   function generatList(arr) {
+function generatList(arr) {
     wrapper.style.display = 'flex';
     wrapper.style.marginTop = 20 + 'px';
  
-   for (let i = 0; i < arr.length; i++) {
-    curentValHref = '#' + arr[i].id;
-   
-    let li1 = document.createElement('li');
-    li1.classList.add('item');
-    ulList.append(li1);
-    let li2 = document.querySelectorAll('.item');
+    for (let i = 0; i < arr.length; i++) {
+        curentValHref = '#' + arr[i].id;
+       
+        let li1 = document.createElement('li');
+        li1.classList.add('item');
+        ulList.append(li1);
+        let li2 = document.querySelectorAll('.item');
 
-    li2[i].innerHTML = `
+        li2[i].innerHTML = `
             <a class="title-item" href = "${curentValHref}">${arr[i].name}</a>
             <img class="img-item" src="${arr[i].imageUrl0}">
             <p class="descript-item">${arr[i].snippet}</p>
-    `
-   }
-   location.hash = 'list';
+        `;
+    }
+    location.hash = 'list';
      
- }
+}        
 
- generatList(dataItems); // for first time
+generatList(dataItems);
 
- function removeList() { // for transform in second page       
+function removeList() {        
     document.querySelectorAll('li').forEach(li => li.remove());
- }
+}
 
- sortByNewest = function sortByNewest(arr) {
+sortByNewest = function sortByNewest(arr) { /// for special case (hash = 'home')
     removeList()
     arr.sort((a, b)=> a.age > b.age ? 1: -1);
     generatList(arr);
@@ -89,11 +83,10 @@ function sortBy() { //for select choise
    
     function sortByRandom(arr) {
         removeList()
-        for (var i = 0; i < 15; i++){
-          arr.sort(()=> Math.random() - 0.5);
+        for (var i = 0; i < 15; i++) {
+            arr.sort(()=> Math.random() - 0.5);
         }
-          generatList(arr);
-
+        generatList(arr);
     }       
     
     function sortByAlphabet(arr) {
@@ -103,62 +96,63 @@ function sortBy() { //for select choise
     }
     
     switch(selectEl.value) {
-            case 'random':
-            indSort == 0 ? sortByRandom(dataItems) : sortByRandom(filterPhones), markPrepare();
-            break;
+        case 'random':
+        indSort == 0 ? sortByRandom(dataItems) : sortByRandom(filterPhones), markPrepare();
+        break;
 
-            case 'newest':
-            indSort == 0 ? sortByNewest(dataItems) : sortByNewest(filterPhones), markPrepare();
-            break;
+        case 'newest':
+        indSort == 0 ? sortByNewest(dataItems) : sortByNewest(filterPhones), markPrepare();
+        break;
 
-            case 'alphabet':
-            indSort == 0 ? sortByAlphabet(dataItems) : sortByAlphabet(filterPhones), markPrepare();
-            break;
+        case 'alphabet':
+        indSort == 0 ? sortByAlphabet(dataItems) : sortByAlphabet(filterPhones), markPrepare();
+        break;
+    }  
 
-    }       
-} // sortBy func end
+} 
 
-   function searchingItems() {
+
+function searchingItems() {
    
-      indSort = 1;
-      indSortAfterHome = 1;
-      let value = inputEl.value.toLowerCase().trim();        
-      filterPhones = dataItems.filter(item => {
-          return item.name.toLowerCase().search(value) > -1;
-       
-     });
-     removeList();
-     generatList(filterPhones);
+    indSort = 1;
+    indSortAfterHome = 1;
+    let value = inputEl.value.toLowerCase().trim();        
+    filterPhones = dataItems.filter(item => {
+        return item.name.toLowerCase().search(value) > -1;     
+    });
+    removeList();
+    generatList(filterPhones);
 
-     markPrepare = function markPrepare() {
+    markPrepare = function markPrepare() {
 
-     let list = document.querySelectorAll('.title-item');
-     if (value) { // for marking of highlighting text
-        list.forEach(elem => {
+       let list = document.querySelectorAll('.title-item');
+       if (value) { // for marking of highlighting text preparation
+            list.forEach(elem => {
 
-            if (elem.innerText.toLowerCase().search(value) == -1) {                              
-                elem.innerHTML = elem.innerText;
-            }
-            else {                    
-               let str = elem.innerText;           
-               elem.innerHTML = insertMark(str,elem.innerText.toLowerCase().search(value),value.length);
-           }
-        });
-    }  // if (value)
-     else {          
-        list.forEach(elem => {               
-        elem.innerHTML = elem.innerText;          
-        });
-     }
+              if (elem.innerText.toLowerCase().search(value) == -1) {                              
+                 elem.innerHTML = elem.innerText;
+              }
+              else {                    
+                 let str = elem.innerText;           
+                 elem.innerHTML = insertMark(str,elem.innerText.toLowerCase().search(value),value.length);
+              }
+            }); 
+
+        }  // if (value)
+        else {          
+            list.forEach(elem => {               
+            elem.innerHTML = elem.innerText;          
+            });
+        }
 
     } //  func markPrepare end
 
     markPrepare();
- 
+
 } // function searchingItems
 
 function insertMark(string,pos,len) {  // for marking of highlighting text
     return string.slice(0, pos) + '<mark>' + string.slice(pos, pos+len) + '</mark>' + string.slice(pos+len);
-  }
+}
   
 
