@@ -7,18 +7,13 @@ let wrapper = document.querySelector('.wrapper');
 let filterPhones;
 let curentValHref;
 let indSort = 0;
-let  markPrepare;
+let markPrepare;
 let inputEl;
 let selectEl;
-let manegerFix;
 let sortByNewest;
 
 function generatManeger() {
-    let manegerFi = document.createElement('div');
-    manegerFi.classList.add('maneger-fix');
-    maneger.append(manegerFi);
-    manegerFix = document.querySelector('.maneger-fix');
-    manegerFix.innerHTML = `    
+    maneger.innerHTML = `    
        <h2>Search</h2>
        <input id="my-input" type="text" placeholder="search">
        <h3>Sort by</h3>
@@ -39,7 +34,7 @@ generatManeger();
 function recreateManeger() {
     inputEl.remove();
     selectEl.remove();
-    manegerFix.remove();
+    maneger.innerHTML = '';
     generatManeger();
     indSort = 0;
 }
